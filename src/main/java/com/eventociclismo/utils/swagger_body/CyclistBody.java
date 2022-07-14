@@ -1,4 +1,4 @@
-package com.eventociclismo.dto;
+package com.eventociclismo.utils.swagger_body;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,16 +12,10 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CyclistDto {
-    private String id;
-    @NotBlank(message = "The name is required")
+public class CyclistBody {
+
     private String name;
-    @NotBlank(message = "The nacionality is required")
     private String nacionality;
-    @Max(999)
-    @Min(1)
-    @NotNull
     private Integer competitionNumber;
-    @NotBlank(message = "The team name is required")
     private String teamName;
 }

@@ -15,6 +15,6 @@ import java.util.Set;
 public class Team {
     @Id
     private String id;
-    private String name;
+    private String teamName;
     private Set<Cyclist> cyclistList;
 }

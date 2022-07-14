@@ -1,4 +1,4 @@
-package com.eventociclismo.dto;
+package com.eventociclismo.utils.swagger_body;
 
 import com.eventociclismo.collections.Cyclist;
 import lombok.AllArgsConstructor;
@@ -12,10 +12,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamDto {
-    private String id;
-    @NotBlank(message = "The cyclist name ir required")
+public class TeamBody {
+
     private String name;
     private Set<Cyclist> cyclists = new HashSet<Cyclist>();
-
 }

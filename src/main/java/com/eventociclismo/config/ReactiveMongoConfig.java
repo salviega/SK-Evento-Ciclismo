@@ -14,7 +14,7 @@ public class ReactiveMongoConfig {
 
     @Bean
     public ReactiveMongoTemplate reactiveMongoTemplate() {
-        return new ReactiveMongoTemplate(mongoClient,"projectonodejs");
+        return new ReactiveMongoTemplate(mongoClient,"evento");
     }
 
 }
