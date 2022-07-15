@@ -7,6 +7,6 @@ import javax.validation.Valid;
 
 @FunctionalInterface
 public interface SaveTeam {
-    Mono<String> apply(@Valid TeamDto teamDto);
+    Mono<TeamDto> apply(@Valid TeamDto teamDto);
 
 }

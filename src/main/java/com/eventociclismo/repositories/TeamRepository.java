@@ -9,6 +9,5 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface TeamRepository extends ReactiveMongoRepository<Team, String> {
-    Flux<Cyclist> findAllByTeamName(String teamName);
     Mono<Team> findByTeamName(String teamName);
 }

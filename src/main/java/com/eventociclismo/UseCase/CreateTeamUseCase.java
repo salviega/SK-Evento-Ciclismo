@@ -21,9 +21,9 @@ public class CreateTeamUseCase implements SaveTeam {
     }
 
     @Override
-    public Mono<String> apply(TeamDto newTeamDto) {
+    public Mono<TeamDto> apply(TeamDto newTeamDto) {
         return teamRepository
                 .save(mapperUtils.fromDtoToTeamEntity().apply(newTeamDto))
-                .map(Team::getId);
+                .map(mapperUtils.fromTeamEntityToDto());
     }
 }
