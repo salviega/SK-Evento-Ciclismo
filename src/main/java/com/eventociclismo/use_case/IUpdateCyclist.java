@@ -1,4 +1,4 @@
-package com.eventociclismo.UseCase;
+package com.eventociclismo.use_case;
 
 import com.eventociclismo.dto.CyclistDto;
 import reactor.core.publisher.Mono;

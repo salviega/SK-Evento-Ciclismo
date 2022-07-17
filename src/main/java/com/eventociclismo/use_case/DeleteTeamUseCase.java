@@ -1,4 +1,4 @@
-package com.eventociclismo.UseCase;
+package com.eventociclismo.use_case;
 
 import com.eventociclismo.repositories.CyclistRepository;
 import com.eventociclismo.repositories.TeamRepository;
@@ -14,12 +14,10 @@ import java.util.function.Function;
 public class DeleteTeamUseCase implements Function<String, Mono<Void>> {
     private final CyclistRepository cyclistRepository;
     private final TeamRepository teamRepository;
-
-    public DeleteTeamUseCase(CyclistRepository cyclistRepository, TeamRepository teamRepository) {
+    public DeleteTeamUseCase(CyclistRepository cyclistRepository, TeamRepository teamRepository, GetTeamUseCase getTeamUseCase) {
         this.cyclistRepository = cyclistRepository;
         this.teamRepository = teamRepository;
     }
-
     @Override
     public Mono<Void> apply(String id) {
         Objects.requireNonNull(id, "Id is required");

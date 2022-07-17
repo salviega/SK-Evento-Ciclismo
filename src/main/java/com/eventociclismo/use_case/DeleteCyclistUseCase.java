@@ -1,4 +1,4 @@
-package com.eventociclismo.UseCase;
+package com.eventociclismo.use_case;
 
 import com.eventociclismo.repositories.CyclistRepository;
 import org.springframework.stereotype.Service;
@@ -12,16 +12,12 @@ import java.util.function.Function;
 @Validated
 public class DeleteCyclistUseCase implements Function<String, Mono<Void>> {
     private final CyclistRepository cyclistRepository;
-
-    public DeleteCyclistUseCase(CyclistRepository cyclistRepository) {
+    public DeleteCyclistUseCase(CyclistRepository cyclistRepository, GetCyclistUseCase getCyclistUseCase) {
         this.cyclistRepository = cyclistRepository;
     }
-
     @Override
     public Mono<Void> apply(String id) {
         Objects.requireNonNull(id, "Id is required");
-        return cyclistRepository.deleteById(id)
-                .map(result -> result)
-                .doOnError(throwable -> Mono.error(throwable.getCause()));
+        return cyclistRepository.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.eventociclismo.UseCase;
+package com.eventociclismo.use_case;
 
 import com.eventociclismo.dto.TeamDto;
 import com.eventociclismo.repositories.TeamRepository;
@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 @Service
 @Validated
 public class CreateTeamUseCase implements ISaveTeam {
-
     private final TeamRepository teamRepository;
     private final MapperUtils mapperUtils;
 
@@ -18,7 +17,6 @@ public class CreateTeamUseCase implements ISaveTeam {
         this.teamRepository = teamRepository;
         this.mapperUtils = mapperUtils;
     }
-
     @Override
     public Mono<TeamDto> apply(TeamDto newTeamDto) {
         return teamRepository

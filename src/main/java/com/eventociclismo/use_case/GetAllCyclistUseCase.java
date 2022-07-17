@@ -1,30 +1,26 @@
-package com.eventociclismo.UseCase;
+package com.eventociclismo.use_case;
 
 import com.eventociclismo.dto.CyclistDto;
 import com.eventociclismo.repositories.CyclistRepository;
 import com.eventociclismo.utils.MapperUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
-import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Service
 @Validated
-public class GetCyclistUseCase implements Function<String, Mono<CyclistDto>> {
+public class GetAllCyclistUseCase implements Supplier<Flux<CyclistDto>> {
     private final CyclistRepository cyclistRepository;
     private final MapperUtils mapperUtils;
-
-    public GetCyclistUseCase(CyclistRepository cyclistRepository, MapperUtils mapperUtils) {
+    public GetAllCyclistUseCase(CyclistRepository cyclistRepository, MapperUtils mapperUtils) {
         this.cyclistRepository = cyclistRepository;
         this.mapperUtils = mapperUtils;
     }
-
     @Override
-    public Mono<CyclistDto> apply(String id) {
-        Objects.requireNonNull(id, "The Team id is required");
-        return cyclistRepository.findById(id)
+    public Flux<CyclistDto> get() {
+        return cyclistRepository.findAll()
                 .map(mapperUtils.fromCyclistEntityToDto());
     }
 }

@@ -1,10 +1,11 @@
 package com.eventociclismo.routers;
 
-import com.eventociclismo.UseCase.*;
+import com.eventociclismo.use_case.*;
 import com.eventociclismo.dto.CyclistDto;
 import com.eventociclismo.dto.TeamDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -19,6 +20,8 @@ public class QueryRouter {
 
     Logger log = LoggerFactory.getLogger("QueryRouter");
 
+
+    @Bean
     public RouterFunction<ServerResponse> getAllCyclists(GetAllCyclistUseCase getAllCyclistUseCase) {
         return route(GET("/cyclists").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
@@ -27,6 +30,7 @@ public class QueryRouter {
 
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> getAllTeams(GetAllTeamsUseCase getAllTeamsUseCase) {
         return route(GET("/teams").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
@@ -35,6 +39,7 @@ public class QueryRouter {
 
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> getCyclist(GetCyclistUseCase getCyclistUseCase) {
         return route(GET("/cyclists/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
@@ -43,16 +48,18 @@ public class QueryRouter {
                                 CyclistDto.class))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> getTeam(GetTeamUseCase getTeamUseCase) {
-        return route(GET("/teams/{_id}").and(accept(MediaType.APPLICATION_JSON)),
+        return route(GET("/teams/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(BodyInserters.fromPublisher(getTeamUseCase.apply(request.pathVariable("_id")),
+                        .body(BodyInserters.fromPublisher(getTeamUseCase.apply(request.pathVariable("id")),
                                 TeamDto.class))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> AddCyclistToTeam(AddCyclistToTeamUseCase addCyclistToTeamUseCase) {
-        return route(POST("/cyclist").and(accept(MediaType.APPLICATION_JSON)),
+        return route(POST("/cyclists").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(CyclistDto.class)
                         .flatMap(createCyclistDto -> addCyclistToTeamUseCase.apply(createCyclistDto)
                                 .flatMap(result -> ServerResponse.ok()
@@ -60,6 +67,7 @@ public class QueryRouter {
                                         .bodyValue(result)))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> createTeam(CreateTeamUseCase createTeamUseCase) {
         return route(POST("/teams").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(TeamDto.class)
@@ -69,6 +77,7 @@ public class QueryRouter {
                                         .bodyValue(result)))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> updateCyclist(UpdateCyclistUseCase updateCyclistUseCase) {
         return route(PUT("/cyclists/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(CyclistDto.class)
@@ -78,6 +87,7 @@ public class QueryRouter {
                                         .bodyValue(result)))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> updateTeam(UpdateTeamUseCase updateTeamUseCase) {
         return route(PUT("/teams/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> request.bodyToMono(TeamDto.class)
@@ -87,18 +97,20 @@ public class QueryRouter {
                                         .bodyValue(result)))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> deleteCyclist(DeleteCyclistUseCase deleteCyclistUseCase) {
         return route(DELETE("/cyclists/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.accepted()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(BodyInserters.fromPublisher(deleteCyclistUseCase.apply(request.pathVariable("id")), Void.class))
+                        .body(BodyInserters.fromPublisher(deleteCyclistUseCase.apply(request.pathVariable("id")), String.class))
         );
     }
+    @Bean
     public RouterFunction<ServerResponse> deleteTeam(DeleteTeamUseCase deleteTeamUseCase) {
         return route(DELETE("/teams/{id}").and(accept(MediaType.APPLICATION_JSON)),
                 request -> ServerResponse.accepted()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(BodyInserters.fromPublisher(deleteTeamUseCase.apply(request.pathVariable("id")), Void.class))
+                        .body(BodyInserters.fromPublisher(deleteTeamUseCase.apply(request.pathVariable("id")), String.class))
         );
     }
 }
