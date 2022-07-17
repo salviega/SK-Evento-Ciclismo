@@ -21,6 +21,7 @@ public class DeleteCyclistUseCase implements Function<String, Mono<Void>> {
     public Mono<Void> apply(String id) {
         Objects.requireNonNull(id, "Id is required");
         return cyclistRepository.deleteById(id)
+                .map(result -> result)
                 .doOnError(throwable -> Mono.error(throwable.getCause()));
     }
 }

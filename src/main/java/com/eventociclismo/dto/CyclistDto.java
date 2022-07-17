@@ -21,8 +21,8 @@ public class CyclistDto {
     @NotBlank(message = "The nacionality is required")
     private String nacionality;
     @NotNull
-    @Min(1)
     @Max(999)
+    @Min(1)
     private Integer competitionNumber;
 
 }

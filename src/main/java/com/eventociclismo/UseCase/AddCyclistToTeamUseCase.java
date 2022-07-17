@@ -26,11 +26,11 @@ public class AddCyclistToTeamUseCase implements Function<CyclistDto, Mono<TeamDt
     @Override
     public Mono<TeamDto> apply(CyclistDto cyclistDto) {
         return getTeamUseCase.apply(cyclistDto.getTeamId())
-                .flatMap(foundTeam ->
+                .flatMap(foundTeamDto ->
                     cyclistRepository.save(mapperUtils.fromDtoToCyclistEntity().apply(cyclistDto))
                             .map(savedCyclist -> {
-                                foundTeam.getCyclists().add(mapperUtils.fromCyclistEntityToDto().apply(savedCyclist));
-                                return foundTeam;
+                                foundTeamDto.getCyclists().add(mapperUtils.fromCyclistEntityToDto().apply(savedCyclist));
+                                return foundTeamDto;
                             })
                 );
 

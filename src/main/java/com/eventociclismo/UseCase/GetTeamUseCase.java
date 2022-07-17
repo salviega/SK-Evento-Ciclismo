@@ -23,7 +23,6 @@ public class GetTeamUseCase implements Function<String, Mono<TeamDto>> {
         this.teamRepository = teamRepository;
         this.mapperUtils = mapperUtils;
     }
-
     @Override
     public Mono<TeamDto> apply(String id) {
         Objects.requireNonNull(id, "The Team id is required");
@@ -31,7 +30,6 @@ public class GetTeamUseCase implements Function<String, Mono<TeamDto>> {
                 .map(mapperUtils.fromTeamEntityToDto())
                 .flatMap(mapTeamAggregate());
     }
-
     private Function<TeamDto, Mono<TeamDto>> mapTeamAggregate() {
         return teamDTO ->
                 Mono.just(teamDTO).zipWith(

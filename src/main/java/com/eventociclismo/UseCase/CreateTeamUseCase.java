@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Validated
-public class CreateTeamUseCase implements SaveTeam {
+public class CreateTeamUseCase implements ISaveTeam {
 
     private final TeamRepository teamRepository;
     private final MapperUtils mapperUtils;

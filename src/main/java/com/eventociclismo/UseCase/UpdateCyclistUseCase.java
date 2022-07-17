@@ -1,41 +1,39 @@
 package com.eventociclismo.UseCase;
 
-import com.eventociclismo.collections.Cyclist;
 import com.eventociclismo.dto.CyclistDto;
+import com.eventociclismo.repositories.CyclistRepository;
 import com.eventociclismo.utils.MapperUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 @Service
 @Validated
-public class UpdateCyclistUseCase implements Function<CyclistDto, Mono<CyclistDto>> {
-    @Autowired
-    ReactiveMongoTemplate mongoTemplate;
+public class UpdateCyclistUseCase implements IUpdateCyclist {
+    private final CyclistRepository cyclistRepository;
     private final MapperUtils mapperUtils;
+    private final GetCyclistUseCase getCyclistUseCase;
 
-    public UpdateCyclistUseCase(MapperUtils mapperUtils) {
+    public UpdateCyclistUseCase(CyclistRepository cyclistRepository, MapperUtils mapperUtils, GetCyclistUseCase getCyclistUseCase) {
+
+        this.cyclistRepository = cyclistRepository;
         this.mapperUtils = mapperUtils;
+        this.getCyclistUseCase = getCyclistUseCase;
     }
-
     @Override
-    public Mono<CyclistDto> apply(CyclistDto cyclistDto) {
-        Objects.requireNonNull(cyclistDto.getId(), "Id is required");
-        Query query = new Query().addCriteria(Criteria.where("_id").is(cyclistDto.getId()));
-        Update update = new Update()
-                .set("teamId", cyclistDto.getTeamId())
-                .set("name", cyclistDto.getName())
-                .set("nacionality", cyclistDto.getNacionality())
-                .set("competitionName", cyclistDto.getCompetitionNumber());
-        return mongoTemplate.findAndModify(query, update, Cyclist.class)
-                .map(mapperUtils.fromCyclistEntityToDto());
-    }
+    public Mono<CyclistDto> apply(String id, CyclistDto cyclistDto) {
+            Objects.requireNonNull(id, "Id of the Team is required");
+            return getCyclistUseCase.apply(id)
+                .flatMap(foundCyclistDto -> {
+                    foundCyclistDto.setTeamId(cyclistDto.getTeamId());
+                    foundCyclistDto.setName(cyclistDto.getName());
+                    foundCyclistDto.setNacionality(cyclistDto.getNacionality());
+                    foundCyclistDto.setCompetitionNumber(cyclistDto.getCompetitionNumber());
+                    return cyclistRepository
+                            .save(mapperUtils.fromDtoToCyclistEntity().apply(foundCyclistDto))
+                            .map(mapperUtils.fromCyclistEntityToDto());
+                         });
+        }
 }

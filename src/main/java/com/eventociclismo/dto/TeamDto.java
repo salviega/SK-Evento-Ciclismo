@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamDto {
     private String id;
-    @NotBlank(message = "The cyclist name ir required")
+    @NotBlank(message = "The cyclist name is required")
     private String name;
     private List<CyclistDto> cyclists;
 }

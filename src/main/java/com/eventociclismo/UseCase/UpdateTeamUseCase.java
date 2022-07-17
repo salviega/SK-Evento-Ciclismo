@@ -3,8 +3,6 @@ package com.eventociclismo.UseCase;
 import com.eventociclismo.dto.TeamDto;
 import com.eventociclismo.repositories.TeamRepository;
 import com.eventociclismo.utils.MapperUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import reactor.core.publisher.Mono;
@@ -13,22 +11,26 @@ import java.util.Objects;
 
 @Service
 @Validated
-public class UpdateTeamUseCase implements SaveTeam {
-    @Autowired
-    ReactiveMongoTemplate mongoTemplate;
+public class UpdateTeamUseCase implements IUpdateTeam {
+
     private final TeamRepository teamRepository;
     private final MapperUtils mapperUtils;
+    private final GetTeamUseCase getTeamUseCase;
 
-    public UpdateTeamUseCase(TeamRepository teamRepository, MapperUtils mapperUtils) {
+    public UpdateTeamUseCase(TeamRepository teamRepository, MapperUtils mapperUtils, GetTeamUseCase getTeamUseCase) {
         this.teamRepository = teamRepository;
         this.mapperUtils = mapperUtils;
+        this.getTeamUseCase = getTeamUseCase;
     }
-
     @Override
-    public Mono<TeamDto> apply(TeamDto teamDto) {
-        Objects.requireNonNull(teamDto.getId(), "Id of the Team is required");
-        return teamRepository
-                .save(mapperUtils.fromDtoToTeamEntity(teamDto.getId()).apply(teamDto))
-                .map(mapperUtils.fromTeamEntityToDto());
+    public Mono<TeamDto> apply(String id, TeamDto teamDto) {
+        Objects.requireNonNull(id, "Id of the Team is required");
+        return getTeamUseCase.apply(id)
+                .flatMap(foundTeamDto -> {
+                    foundTeamDto.setName(teamDto.getName());
+                    return teamRepository
+                            .save(mapperUtils.fromDtoToTeamEntity(foundTeamDto.getId()).apply(foundTeamDto))
+                            .map(mapperUtils.fromTeamEntityToDto());
+                });
     }
 }
