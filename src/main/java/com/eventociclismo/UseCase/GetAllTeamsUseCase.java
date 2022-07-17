@@ -6,28 +6,28 @@ import com.eventociclismo.repositories.TeamRepository;
 import com.eventociclismo.utils.MapperUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Service
 @Validated
-public class GetTeamUseCase implements Function<String, Mono<TeamDto>> {
+public class GetAllTeamsUseCase implements Supplier<Flux<TeamDto>> {
     private final CyclistRepository cyclistRepository;
     private final TeamRepository teamRepository;
     private final MapperUtils mapperUtils;
 
-    public GetTeamUseCase(CyclistRepository cyclistRepository, TeamRepository teamRepository, MapperUtils mapperUtils) {
+    public GetAllTeamsUseCase(CyclistRepository cyclistRepository, TeamRepository teamRepository, MapperUtils mapperUtils) {
         this.cyclistRepository = cyclistRepository;
         this.teamRepository = teamRepository;
         this.mapperUtils = mapperUtils;
     }
 
     @Override
-    public Mono<TeamDto> apply(String id) {
-        Objects.requireNonNull(id, "The Team id is required");
-        return teamRepository.findById(id)
+    public Flux<TeamDto> get() {
+        return teamRepository.findAll()
                 .map(mapperUtils.fromTeamEntityToDto())
                 .flatMap(mapTeamAggregate());
     }

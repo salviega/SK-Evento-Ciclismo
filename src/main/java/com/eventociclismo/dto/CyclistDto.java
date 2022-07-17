@@ -14,14 +14,15 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class CyclistDto {
     private String id;
+    @NotBlank(message = "The team id is required")
+    private String teamId;
     @NotBlank(message = "The name is required")
     private String name;
     @NotBlank(message = "The nacionality is required")
     private String nacionality;
-    @Max(999)
-    @Min(1)
     @NotNull
+    @Min(1)
+    @Max(999)
     private Integer competitionNumber;
-    @NotBlank(message = "The team name is required")
-    private String teamName;
+
 }

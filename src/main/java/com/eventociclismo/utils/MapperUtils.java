@@ -10,31 +10,15 @@ import java.util.function.Function;
 
 @Component
 public class MapperUtils {
-    public Function<Team, TeamDto> fromTeamEntityToDto() {
-        return team -> {
-            var teamDto = new TeamDto();
-            teamDto.setName(team.getTeamName());
-            teamDto.setCyclists(team.getCyclistList());
-            return teamDto;
-        };
-    }
-
-    public Function<TeamDto, Team> fromDtoToTeamEntity() {
-        return teamDto -> {
-            var team = new Team();
-            team.setTeamName(teamDto.getName());
-            team.setCyclistList(teamDto.getCyclists());
-            return team;
-        };
-    }
 
     public Function<Cyclist, CyclistDto> fromCyclistEntityToDto() {
         return cyclist -> {
             var cyclistDto = new CyclistDto();
+            cyclistDto.setId(cyclist.getId());
+            cyclistDto.setTeamId(cyclist.getTeamId());
             cyclistDto.setName(cyclist.getName());
             cyclistDto.setNacionality(cyclist.getNacionality());
             cyclistDto.setCompetitionNumber(cyclist.getCompetitionNumber());
-            cyclistDto.setTeamName(cyclist.getTeamName());
             return cyclistDto;
         };
     }
@@ -42,11 +26,31 @@ public class MapperUtils {
     public Function<CyclistDto, Cyclist> fromDtoToCyclistEntity() {
         return cyclistDto -> {
             var cyclist = new Cyclist();
+            cyclist.setId(cyclistDto.getId());
+            cyclist.setTeamId(cyclistDto.getTeamId());
             cyclist.setName(cyclistDto.getName());
             cyclist.setNacionality(cyclistDto.getNacionality());
             cyclist.setCompetitionNumber(cyclistDto.getCompetitionNumber());
-            cyclist.setTeamName(cyclistDto.getTeamName());
             return cyclist;
         };
     }
+    public Function<Team, TeamDto> fromTeamEntityToDto() {
+        return team -> {
+            var teamDto = new TeamDto();
+            teamDto.setId(team.getId());
+            teamDto.setName(team.getName());
+            return teamDto;
+        };
+    }
+
+    public Function<TeamDto, Team> fromDtoToTeamEntity(String id) {
+        return teamDto -> {
+            var team = new Team();
+            team.setId(id);
+            team.setName(teamDto.getName());
+            return team;
+        };
+    }
+
+
 }

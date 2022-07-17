@@ -9,5 +9,4 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface TeamRepository extends ReactiveMongoRepository<Team, String> {
-    Mono<Team> findByTeamName(String teamName);
 }

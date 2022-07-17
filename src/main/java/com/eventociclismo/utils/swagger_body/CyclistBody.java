@@ -15,7 +15,8 @@ import javax.validation.constraints.NotNull;
 public class CyclistBody {
 
     private String name;
+    private String teamId;
     private String nacionality;
     private Integer competitionNumber;
-    private String teamName;
+
 }

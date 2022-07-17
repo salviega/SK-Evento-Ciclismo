@@ -13,8 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Cyclist {
     @Id
     private String id;
+    private String teamId;
     private String name;
     private String nacionality;
     private Integer competitionNumber;
-    private String teamName;
+
 }

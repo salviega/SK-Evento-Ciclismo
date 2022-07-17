@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Set;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +13,5 @@ import java.util.Set;
 public class Team {
     @Id
     private String id;
-    private String teamName;
-    private Set<Cyclist> cyclistList;
+    private String name;
 }
